@@ -16,11 +16,14 @@ public class KullaniciDAO {
         Connection conn = VTBaglanti.baglantiGetir();
 
         //bu postgresql den kullanici adi kimse (admin yada user) sifresini getir demek
-        String sorgu = "select sifre from kullanici where kullanici_adi=?";
+        String sorgu = "select sifre from kullanici where kullanici_adi=? and aktif=?";
 
         PreparedStatement ps = conn.prepareStatement(sorgu);
 
+        //Burdaki 1 yukarıdaki 1.soru işaretini değeri
         ps.setString(1,kullanici.getKullaniciAdi());
+        //Buda 2.soru işaretinin değeri yani aktifin
+        ps.setInt(2,kullanici.getAktif());
 
         ResultSet rs = ps.executeQuery();
 
@@ -33,7 +36,23 @@ public class KullaniciDAO {
         ps.close();
         VTBaglanti.baglantiKapat(conn);
 
-        String cozulmus_sifre = AES.decrypt(vtSifre, Sabitler.SECRET_KEY);
+
+        String cozulmus_sifre =null;
+
+
+        if(vtSifre!=null)
+
+        {
+            cozulmus_sifre = AES.decrypt(vtSifre, Sabitler.SECRET_KEY);
+        }
+
+        else
+        {
+            //vtSifre null ise aşağıdaki eşitliği kontrol etmeye gerek yok
+            //Buradan metod sonucunu false olarak döndürüyorum.
+            return false;
+        }
+
 
         /*burda gelen şifreyle bizim gircegimiz sifre aynı mı kodu yazılıyor
         duğruysa true

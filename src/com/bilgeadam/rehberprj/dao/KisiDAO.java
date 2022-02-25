@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KisiDAO {
 
@@ -44,5 +46,10 @@ public class KisiDAO {
 
 
 
+    }
+    public static List<KisiDTO> listele()
+    {
+            List<KisiDTO> kisiListesi = new ArrayList<>();
+            return kisiListesi;
     }
 }
